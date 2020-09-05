@@ -1,0 +1,559 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+        crossorigin=""></script>
+        <script src="leaflet.ajax.min.js"></script>
+
+        <style>
+            #map { height: 700px; }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+
+        <script>
+            var rej = {
+				"podlaskie" : {
+					"powiat Białystok" : "BI",
+					"powiat Suwałki" : "BS",
+					"powiat Łomża" : "BL",
+					"powiat augustowski" : "BAU",
+					"powiat białostocki" : "BIA",
+					"powiat bielski" : "BBI",
+					"powiat grajewski" : "BGR",
+					"powiat hajnowski" : "BHA",
+					"powiat kolneński" : "BKL",
+					"powiat moniecki" : "BMN",
+					"powiat sejneński" : "BSE",
+					"powiat siemiatycki" : "BSI",
+					"powiat sokólski" : "BSK",
+					"powiat suwalski" : "BSU",
+					"powiat wysokomazowiecki" : "BWM",
+					"powiat zambrowski" : "BZA",
+					"powiat łomżyński" : "BLM"
+				},
+				"kujawsko-pomorskie" : {
+					"powiat Bydgoszcz" : "CB",
+					"powiat Grudziądz" : "CG",
+					"powiat Toruń" : "CT",
+					"powiat Włocławek" : "CW",
+					"powiat aleksandrowski" : "CAL",
+					"powiat brodnicki" : "CBR",
+					"powiat bydgoski" : "CBY",
+					"powiat chełmiński" : "CCH",
+					"powiat golubsko-dobrzyński" : "CGD",
+					"powiat grudziądzki" : "CGR",
+					"powiat inowrocławski" : "CIN",
+					"powiat lipnowski" : "CLI",
+					"powiat mogileński" : "CMG",
+					"powiat nakielski" : "CNA",
+					"powiat radziejowski" : "CRA",
+					"powiat rypiński" : "CRY",
+					"powiat sępoleński" : "CSE",
+					"powiat świecki" : "CSW",
+					"powiat toruński" : "CTR",
+					"powiat tucholski" : "CTU",
+					"powiat wąbrzeski" : "CWA",
+					"powiat włocławski" : "CWL",
+					"powiat żniński" : "CZN"
+				},
+				"dolnośląskie" : {
+					"powiat Jelenia Góra" : "DJ",
+					"powiat Legnica" : "DL",
+					"powiat Wałbrzych" : "DB",
+					"powiat Wrocław" : "DW",
+					"powiat bolesławiecki" : "DBL",
+					"powiat dzierżoniowski" : "DDZ",
+					"powiat górowski" : "DGR",
+					"powiat głogowski" : "DGL",
+					"powiat jaworski" : "DJA",
+					"powiat jeleniogórski" : "DJE",
+					"powiat kamiennogórski" : "DKA",
+					"powiat kłodzki" : "DKL",
+					"powiat legnicki" : "DLE",
+					"powiat lubański" : "DLB",
+					"powiat lubiński" : "DLU",
+					"powiat lwówecki" : "DLW",
+					"powiat milicki" : "DMI",
+					"powiat oleśnicki" : "DOL",
+					"powiat oławski" : "DOA",
+					"powiat polkowicki" : "DPL",
+					"powiat średzki" : "DSR",
+					"powiat strzeliński" : "DST",
+					"powiat świdnicki" : "DSW",
+					"powiat trzebnicki" : "DTR",
+					"powiat wałbrzyski" : "DBA",
+					"powiat wołowski" : "DWL",
+					"powiat wrocławski" : "DWR",
+					"powiat ząbkowicki" : "DZA",
+					"powiat zgorzelecki" : "DZG",
+					"powiat złotoryjski" : "DZL"
+				},
+				"łódzkie" : {
+					"powiat Piotrków Trybunalski" : "EP",
+					"powiat Skierniewice" : "ES",
+					"powiat Łódź" : "EL",
+					"powiat bełchatowski" : "EBE",
+					"powiat brzeziński" : "EBR",
+					"powiat kutnowski" : "EKU",
+					"powiat opoczyński" : "EOP",
+					"powiat pabianicki" : "EPA",
+					"powiat pajęczański" : "EPJ",
+					"powiat piotrkowski" : "EPI",
+					"powiat poddębicki" : "EPD",
+					"powiat radomszczański" : "ERA",
+					"powiat rawski" : "ERW",
+					"powiat sieradzki" : "ESI",
+					"powiat skierniewicki" : "ESK",
+					"powiat tomaszowski" : "ETM",
+					"powiat wieluński" : "EWI",
+					"powiat wieruszowski" : "EWE",
+					"powiat zduńskowolski" : "EZD",
+					"powiat zgierski" : "EZG",
+					"powiat łaski" : "ELA",
+					"powiat łęczycki" : "ELE",
+					"powiat łódzki wschodni" : "ELW",
+					"powiat łowicki" : "ELC"
+				},
+				"lubuskie" : {
+					"powiat Gorzów Wielkopolski" : "FG",
+					"powiat Zielona Góra" : "FZ",
+					"powiat gorzowski" : "FGW",
+					"powiat krośnieński" : "FKR",
+					"powiat międzyrzecki" : "FMI",
+					"powiat nowosolski" : "FNW",
+					"powiat strzelecko-drezdenecki" : "FSD",
+					"powiat sulęciński" : "FSU",
+					"powiat świebodziński" : "FSW",
+					"powiat słubicki" : "FSL",
+					"powiat wschowski" : "FWS",
+					"powiat żagański" : "FZG",
+					"powiat żarski" : "FZA",
+					"powiat zielonogórski" : "FZI"
+				},
+				"pomorskie" : {
+					"powiat Gdańsk" : "GD",
+					"powiat Gdynia" : "GA",
+					"powiat Sopot" : "GSP",
+					"powiat Słupsk" : "GS",
+					"powiat bytowski" : "GBY",
+					"powiat chojnicki" : "GCH",
+					"powiat człuchowski" : "GCZ",
+					"powiat gdański" : "GDA",
+					"powiat kartuski" : "GKA",
+					"powiat kościerski" : "GKS",
+					"powiat kwidzyński" : "GKW",
+					"powiat lęborski" : "GLE",
+					"powiat malborski" : "GMB",
+					"powiat nowodworski" : "GND",
+					"powiat pucki" : "GPU",
+					"powiat starogardzki" : "GST",
+					"powiat sztumski" : "GSZ",
+					"powiat słupski" : "GSL",
+					"powiat tczewski" : "GTC",
+					"powiat wejherowski" : ["GWE", "GWO"]
+				},
+				"małopolskie" : {
+					"powiat Kraków" : ["KR", "KK"],
+					"powiat Nowy Sącz" : "KN",
+					"powiat Tarnów" : "KT",
+					"powiat bocheński" : ["KBC", "KBA"],
+					"powiat brzeski" : "KBR",
+					"powiat chrzanowski" : "KCH",
+					"powiat dąbrowski" : "KDA",
+					"powiat gorlicki" : "KGR",
+					"powiat krakowski" : "KRA",
+					"powiat limanowski" : "KLI",
+					"powiat miechowski" : "KMI",
+					"powiat myślenicki" : "KMY",
+					"powiat nowosądecki" : "KNS",
+					"powiat nowotarski" : "KNT",
+					"powiat olkuski" : "KOL",
+					"powiat oświęcimski" : "KOS",
+					"powiat proszowicki" : "KPR",
+					"powiat suski" : "KSU",
+					"powiat tarnowski" : "KTA",
+					"powiat tatrzański" : "KTT",
+					"powiat wadowicki" : "KWA",
+					"powiat wielicki" : "KWI"
+				},
+				"lubelskie" : {
+					"powiat Biała Podlaska" : "LB",
+					"powiat Chełm" : "LC",
+					"powiat Lublin" : "LU",
+					"powiat Zamość" : "LZ",
+					"powiat bialski" : "LBI",
+					"powiat biłgorajski" : "LBL",
+					"powiat chełmski" : "LCH",
+					"powiat hrubieszowski" : "LHR",
+					"powiat janowski" : "LJA",
+					"powiat kraśnicki" : "LKR",
+					"powiat krasnostawski" : "LKS",
+					"powiat lubartowski" : "LLB",
+					"powiat lubelski" : "LUB",
+					"powiat opolski" : "LOP",
+					"powiat parczewski" : "LPA",
+					"powiat puławski" : "LPU",
+					"powiat radzyński" : "LRA",
+					"powiat rycki" : "LRY",
+					"powiat świdnicki" : "LSW",
+					"powiat tomaszowski" : "LTM",
+					"powiat włodawski" : "LWL",
+					"powiat zamojski" : "LZA",
+					"powiat łęczyński" : "LLE",
+					"powiat łukowski" : "LLU"
+				},
+				"warmińsko-mazurskie" : {
+					"powiat Elbląg" : "NE",
+					"powiat Olsztyn" : "NO",
+					"powiat bartoszycki" : "NBA",
+					"powiat braniewski" : "NBR",
+					"powiat działdowski" : "NDZ",
+					"powiat elbląski" : "NEB",
+					"powiat ełcki" : "NEL",
+					"powiat giżycki" : "NGI",
+					"powiat gołdapski" : "NGO",
+					"powiat iławski" : "NIL",
+					"powiat kętrzyński" : "NKE",
+					"powiat lidzbarski" : "NLI",
+					"powiat mrągowski" : "NMR",
+					"powiat nidzicki" : "NNI",
+					"powiat nowomiejski" : "NNM",
+					"powiat olecki" : "NOE",
+					"powiat olsztyński" : "NOL",
+					"powiat ostródzki" : "NOS",
+					"powiat piski" : "NPI",
+					"powiat szczycieński" : "NSZ",
+					"powiat węgorzewski" : "NWE"
+				},
+				"opolskie" : {
+					"powiat Opole" : "OP",
+					"powiat brzeski" : "OB",
+					"powiat głubczycki" : "OGL",
+					"powiat kędzierzyńsko-kozielski" : "OK",
+					"powiat kluczborski" : "OKL",
+					"powiat krapkowicki" : "OKR",
+					"powiat namysłowski" : "ONA",
+					"powiat nyski" : "ONY",
+					"powiat oleski" : "OOL",
+					"powiat opolski" : "OPO",
+					"powiat prudnicki" : "OPR",
+					"powiat strzelecki" : "OST"
+				},
+				"wielkopolskie" : {
+					"powiat Kalisz" : "PK",
+					"powiat Konin" : "PN",
+					"powiat Leszno" : "PL",
+					"powiat Poznań" : ["PO", "PY"],
+					"powiat chodzieski" : "PCH",
+					"powiat czarnkowsko-trzcianecki" : "PCT",
+					"powiat gnieźnieński" : "PGN",
+					"powiat gostyński" : "PGS",
+					"powiat grodziski" : "PGO",
+					"powiat jarociński" : "PJA",
+					"powiat kaliski" : "PKA",
+					"powiat kępiński" : "PKE",
+					"powiat kolski" : "PKL",
+					"powiat koniński" : "PKN",
+					"powiat kościański" : "PKS",
+					"powiat krotoszyński" : "PKR",
+					"powiat leszczyński" : "PLE",
+					"powiat międzychodzki" : "PMI",
+					"powiat nowotomyski" : "PNT",
+					"powiat obornicki" : "POB",
+					"powiat ostrowski" : "POS",
+					"powiat ostrzeszowski" : "POT",
+					"powiat pilski" : "PP",
+					"powiat pleszewski" : "PPL",
+					"powiat poznański" : "PZ",
+					"powiat rawicki" : "PRA",
+					"powiat średzki" : "PSR",
+					"powiat śremski" : "PSE",
+					"powiat szamotulski" : "PSZ",
+					"powiat słupecki" : "PSL",
+					"powiat turecki" : "PTU",
+					"powiat wągrowiecki" : "PWA",
+					"powiat wolsztyński" : "PWL",
+					"powiat wrzesiński" : "PWR",
+					"powiat złotowski" : "PZL"
+				},
+				"podkarpackie" : {
+					"powiat Krosno" : "RK",
+					"powiat Przemyśl" : "RP",
+					"powiat Rzeszów" : "RZ",
+					"powiat Tarnobrzeg" : "RT",
+					"powiat bieszczadzki" : "RBI",
+					"powiat brzozowski" : "RBR",
+					"powiat dębicki" : "RDE",
+					"powiat jarosławski" : "RJA",
+					"powiat jasielski" : "RJS",
+					"powiat kolbuszowski" : "RKL",
+					"powiat krośnieński" : "RKR",
+					"powiat leski" : "RLS",
+					"powiat leżajski" : "RLE",
+					"powiat lubaczowski" : "RLU",
+					"powiat mielecki" : "RMI",
+					"powiat niżański" : "RNI",
+					"powiat przemyski" : "RPR",
+					"powiat przeworski" : "RPZ",
+					"powiat ropczycko-sędziszowski" : "RRS",
+					"powiat rzeszowski" : "RZE",
+					"powiat sanocki" : "RSA",
+					"powiat stalowowolski" : "RST",
+					"powiat strzyżowski" : "RSR",
+					"powiat tarnobrzeski" : "RTA",
+					"powiat łańcucki" : "RLA"
+				},
+				"śląskie" : {
+					"powiat Bielsko-Biała" : "SB",
+					"powiat Bytom" : "SY",
+					"powiat Chorzów" : "SH",
+					"powiat Częstochowa" : "SC",
+					"powiat Dąbrowa Górnicza" : "SD",
+					"powiat Gliwice" : "SG",
+					"powiat Jastrzębie-Zdrój" : "SJZ",
+					"powiat Jaworzno" : "SJ",
+					"powiat Katowice" : "SK",
+					"powiat Mysłowice" : "SM",
+					"powiat Piekary Śląskie" : "SPI",
+					"powiat Ruda Śląska" : "SL",
+					"powiat Rybnik" : "SR",
+					"powiat Siemianowice Śląskie" : "SI",
+					"powiat Sosnowiec" : "SO",
+					"powiat Świętochłowice" : "SW",
+					"powiat Tychy" : "ST",
+					"powiat Zabrze" : "SZ",
+					"powiat Żory" : "SZO",
+					"powiat będziński" : "SBE",
+					"powiat bielski" : "SBI",
+					"powiat bieruńsko-lędziński" : "SBL",
+					"powiat cieszyński" : "SCI",
+					"powiat częstochowski" : "SCZ",
+					"powiat gliwicki" : "SGL",
+					"powiat kłobucki" : "SKL",
+					"powiat lubliniecki" : "SLU",
+					"powiat mikołowski" : "SMI",
+					"powiat myszkowski" : "SMY",
+					"powiat pszczyński" : "SPS",
+					"powiat raciborski" : "SRC",
+					"powiat rybnicki" : "SRB",
+					"powiat tarnogórski" : "STA",
+					"powiat wodzisławski" : ["SWD", "SWZ"],
+					"powiat zawierciański" : "SZA",
+					"powiat żywiecki" : "SZY"
+				},
+				"świętokrzyskie" : {
+					"powiat Kielce" : "TK",
+					"powiat buski" : "TBU",
+					"powiat jędrzejowski" : "TJE",
+					"powiat kazimierski" : "TKA",
+					"powiat kielecki" : "TKI",
+					"powiat konecki" : "TKN",
+					"powiat opatowski" : "TOP",
+					"powiat ostrowiecki" : "TOS",
+					"powiat pińczowski" : "TPI",
+					"powiat sandomierski" : "TSA",
+					"powiat skarżyski" : "TSK",
+					"powiat starachowicki" : "TST",
+					"powiat staszowski" : "TSZ",
+					"powiat włoszczowski" : "TLW"
+				},
+				"mazowieckie" : {
+					"powiat Ostrołęka" : "WO",
+					"powiat Płock" : "WP",
+					"powiat Radom" : "WR",
+					"powiat Siedlce" : "WS",
+					"powiat Warszawa" : ["WB", "WA", "WD", "WE", "WU", "WH", "WF", "WW", "WI", "WJ", "WK", "WN", "WT", "WX", "WY"],
+					"powiat białobrzeski" : "WBR",
+					"powiat ciechanowski" : "WCI",
+					"powiat garwoliński" : "WG",
+					"powiat gostyniński" : "WGS",
+					"powiat grodziski" : "WGM",
+					"powiat grójecki" : "WGR",
+					"powiat kozienicki" : "WKZ",
+					"powiat legionowski" : "WL",
+					"powiat lipski" : "WLI",
+					"powiat makowski" : "WMA",
+					"powiat miński" : "WM",
+					"powiat mławski" : "WML",
+					"powiat nowodworski" : "WND",
+					"powiat ostrowski" : "WOR",
+					"powiat ostrołęcki" : "WOS",
+					"powiat otwocki" : "WOT",
+					"powiat piaseczyński" : "WPI",
+					"powiat pruszkowski" : ["WPR", "WPP", "WPS"],
+					"powiat przasnyski" : "WPZ",
+					"powiat przysuski" : "WPY",
+					"powiat pułtuski" : "WPU",
+					"powiat płocki" : "WPL",
+					"powiat płoński" : "WPN",
+					"powiat radomski" : "WRA",
+					"powiat siedlecki" : "WSI",
+					"powiat sierpecki" : "WSE",
+					"powiat sochaczewski" : "WSC",
+					"powiat sokołowski" : "WSK",
+					"powiat szydłowiecki" : "WSZ",
+					"powiat warszawski zachodni" : "WZ",
+					"powiat węgrowski" : "WWE",
+					"powiat wołomiński" : ["WV", "WWL"],
+					"powiat wyszkowski" : "WWY",
+					"powiat żuromiński" : "WZU",
+					"powiat zwoleński" : "WZW",
+					"powiat żyrardowski" : "WZY",
+					"powiat łosicki" : "WLS"
+				},
+				"zachodniopomorskie" : {
+					"powiat Koszalin" : "ZK",
+					"powiat Świnoujście" : "ZSW",
+					"powiat Szczecin" : ["ZS", "ZZ"],
+					"powiat białogardzki" : "ZBI",
+					"powiat choszczeński" : "ZCH",
+					"powiat drawski" : "ZDR",
+					"powiat goleniowski" : "ZGL",
+					"powiat gryficki" : "ZGY",
+					"powiat gryfiński" : "ZGR",
+					"powiat kamieński" : "ZKA",
+					"powiat koszaliński" : "ZKO",
+					"powiat kołobrzeski" : "ZKL",
+					"powiat myśliborski" : "ZMY",
+					"powiat policki" : "ZPL",
+					"powiat pyrzycki" : "ZPY",
+					"powiat stargardzki" : "ZST",
+					"powiat świdwiński" : "ZSD",
+					"powiat szczecinecki" : "ZSZ",
+					"powiat sławieński" : "ZSL",
+					"powiat wałecki" : "ZWA",
+					"powiat łobeski" : "ZLO"
+				}
+			};
+
+            var woj = {
+                "02" : "dolnośląskie",
+                "04" : "kujawsko-pomorskie",
+                "06" : "lubelskie",
+                "08" : "lubuskie",
+                "10" : "łódzkie",
+                "12" : "małopolskie",
+                "14" : "mazowieckie",
+                "16" : "opolskie",
+                "18" : "podkarpackie",
+                "20" : "podlaskie",
+                "22" : "pomorskie",
+                "24" : "śląskie",
+                "26" : "świętokrzyskie",
+                "28" : "warmińsko-mazurskie",
+                "30" : "wielkopolskie",
+                "32" : "zachodniopomorskie"
+            };
+
+            var colors = {
+                "dolnośląskie" : "#e6194B",
+                "kujawsko-pomorskie" : "#3cb44b",
+                "lubelskie" : "#ffe119",
+                "lubuskie" : "#4363d8",
+                "łódzkie" : "#f58231",
+                "małopolskie" : "#911eb4",
+                "mazowieckie" : "#42d4f4",
+                "opolskie" : "#f032e6",
+                "podkarpackie" : "#bfef45",
+                "podlaskie" : "#fabebe",
+                "pomorskie" : "#e6beff",
+                "śląskie" : "#469990",
+                "świętokrzyskie" : "#9A6324",
+                "warmińsko-mazurskie" : "#fffac8",
+                "wielkopolskie" : "#800000",
+                "zachodniopomorskie" : "#aaffc3"
+            };
+
+            var map = L.map('map').setView([52.237049, 21.017532], 7);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var geojsonLayer = new L.GeoJSON.AJAX("powiaty_simple3.json", {
+                onEachFeature: function(feature, layer) {
+                    console.log(feature);
+                    // layer.bindPopup(feature.properties.jpt_nazwa_);
+
+                    var kodJe = feature.properties.jpt_kod_je;
+                    var w = woj[kodJe.substring(0, 2)];
+                    feature.properties.woj = w;
+
+                    var label = feature.properties.jpt_nazwa_;
+                    var rejPrefix = rej[w][feature.properties.jpt_nazwa_];
+                    if (rejPrefix) {
+						if (Array.isArray(rejPrefix)) {
+							rejPrefix = rejPrefix.join(', ');
+						}
+                        label += '<br/>' + rejPrefix;
+                    }
+
+
+                    layer.setStyle({fillColor: colors[w]});
+
+                    feature.properties.rej = rejPrefix;
+                    layer.bindTooltip(label, {
+                        permanent:  true, 
+                        direction: 'center', 
+                        className: 'countyLabel'
+                    }).openTooltip();
+                    layer.on('click', function(e) {
+                        console.log('layer clicked: ');
+                        console.log(e);
+                        e.target.setStyle({fillColor: '#ff0000'});
+                    });
+                }
+            });
+            geojsonLayer.addTo(map);
+            // geojsonLayer.on('click', function(e) {
+            //     console.log(e);
+            //     e.layer.options.color = "#ff0000";
+            // });
+
+            var lastZoom;
+            var ZOOM_LABELS = 8;
+            map.on('zoomend', function() {
+            var zoom = map.getZoom();
+            if (zoom < ZOOM_LABELS && (!lastZoom || lastZoom >= ZOOM_LABELS)) {
+                map.eachLayer(function(l) {
+                if (l.getTooltip) {
+                    var toolTip = l.getTooltip();
+                    if (toolTip) {
+                        this.map.closeTooltip(toolTip);
+                    }
+                }
+                });
+            } else if (zoom >= ZOOM_LABELS && (!lastZoom || lastZoom < ZOOM_LABELS)) {
+                map.eachLayer(function(l) {
+                if (l.getTooltip) {
+                    var toolTip = l.getTooltip();
+                    if (toolTip) {
+                        this.map.addLayer(toolTip);
+                    }
+                }
+                });
+            }
+            lastZoom = zoom;
+            });
+        </script>
+        <style>
+            .countyLabel{
+                background: rgba(255, 255, 255, 0);
+                border:0;
+                border-radius:0px;
+                box-shadow: 0 0px 0px;
+                color: white;
+                font-weight: bold;
+                font-style: italic;
+                text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
+				text-align: center;
+            } 
+        </style>
+    </body>
+</html>
