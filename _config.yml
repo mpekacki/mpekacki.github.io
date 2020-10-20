@@ -30,7 +30,7 @@ twitter_username: jekyllrb
 github_username:  mpekacki
 
 # Build settings
-theme: jekyll-theme-cayman
+theme: jekyll-theme-slate
 plugins:
   - jekyll-feed
 
