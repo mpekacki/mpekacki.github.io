@@ -10,6 +10,8 @@ In this post we will see how to add nicely looking animations to Salesforce's Li
 
 As their website says, "AutoAnimate is a zero-config, drop-in animation utility that adds smooth transitions to your web app. You can use it with React, Solid, Vue, Svelte, or any other JavaScript application". And indeed, you can also use it with Salesforce. Here's how it will look like when applied to a simple LWC with a sortable list:
 
+<iframe width="100%" height="800" src="https://empathetic-raccoon-u6p71g-dev-ed.trailblaze.my.site.com/autoAnimate/" frameborder="0"></iframe>
+
 All it took to add these nice animations was to, first, add a class to the parent element for the list elements in the HTML file:
 
 `<div class="animContainer">`
