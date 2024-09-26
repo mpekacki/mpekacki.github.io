@@ -12,6 +12,8 @@ As their website says, "AutoAnimate is a zero-config, drop-in animation utility 
 
 <iframe width="100%" height="800" src="https://empathetic-raccoon-u6p71g-dev-ed.trailblaze.my.site.com/autoAnimate/" frameborder="0"></iframe>
 
+## How to use it in LWC
+
 All it took to add these nice animations was to, first, add a class to the parent element for the list elements in the HTML file:
 
 `<div class="animContainer">`
@@ -39,6 +41,8 @@ renderedCallback() {
 ```
 
 That's it! Now the list is nicely animated every time an element changes position, a new element is created or an existing element is deleted.
+
+## Adding the library to SFDX project
 
 The only other thing we need to do is to add the library to our project (which we imported in `import autoAnimate from 'c/autoAnimate';`). We can do it by adding the library as an LWC module. To do it, let's create a new Lightning Web Component in our project and name it `autoAnimate`. If you're using Illuminated Cloud 2, you can choose `Type: Service` in the new LWC dialog - this way, no HTML file will be created, since it's unneccessary. If you're using VS Code, LWCs are always created with HTML files, but you can just delete the .html file. Now, your new `autoAnimate` component will look like this:
 
@@ -77,3 +81,5 @@ and in `force-app\main\default\lwc\autoAnimate\autoAnimate.js`, replace the whol
 `replaceMeWith@LibraryFromNodeModules`
 
 Now, our LWC module will be kept in sync with `npm` automatically! One more thing: apparently, the replacements don't work for all deployment methods. I didn't test it thoroughly yet, but it seems that if we just deploy our LWC library using a VS Code command, the replacement will not be performed. But if we use `sf project deploy start` - it will. Of course, the latter command will deploy the whole project, not just a single component. To avoid mistakes, we put `@` inside our replacement string - this makes the unaltered file contain an invalid JavaScript, so it will not be deployed using a method that does not perform replacements and instead it will produce an error. If we just used `replaceMeWithLibraryFromNodeModules`, it would deploy even without replacement, since this string is technically a valid Javascript (albeit useless).
+
+## Limitations related to LWC
