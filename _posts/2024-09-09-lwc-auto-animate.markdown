@@ -83,3 +83,10 @@ and in `force-app\main\default\lwc\autoAnimate\autoAnimate.js`, replace the whol
 Now, our LWC module will be kept in sync with `npm` automatically! One more thing: apparently, the replacements don't work for all deployment methods. I didn't test it thoroughly yet, but it seems that if we just deploy our LWC library using a VS Code command, the replacement will not be performed. But if we use `sf project deploy start` - it will. Of course, the latter command will deploy the whole project, not just a single component. To avoid mistakes, we put `@` inside our replacement string - this makes the unaltered file contain an invalid JavaScript, so it will not be deployed using a method that does not perform replacements and instead it will produce an error. If we just used `replaceMeWithLibraryFromNodeModules`, it would deploy even without replacement, since this string is technically a valid Javascript (albeit useless).
 
 ## Limitations related to LWC
+
+So far everything looks good, but there are some caveats related to how LWCs work.
+
+First, the library will only work in orgs that have [Lightning Web Security (LWS)](https://developer.salesforce.com/docs/platform/lwc/guide/security-lwsec-intro.html) enabled. If your org doesn't use it, it uses Locker Service instead, and that means that any third-party libraries are not allowed to modify the DOM, so the animations will not work.
+
+Second, even if LWS is enabled, not all DOM can animated - only standard HTML tags that you explicitly define in your LWC. In particular, any standard LWC components such as `lightning-button-group` or `lightning-data-table` will not work with AutoAnimate because their DOM is protected by LWS and can't be touched by any third-party code. For example, you may be tempted to animate `lightning-layout`:
+
