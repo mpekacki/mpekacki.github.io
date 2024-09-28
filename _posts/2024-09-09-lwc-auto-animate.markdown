@@ -90,3 +90,22 @@ First, the library will only work in orgs that have [Lightning Web Security (LWS
 
 Second, even if LWS is enabled, not all DOM can animated - only standard HTML tags that you explicitly define in your LWC. In particular, any standard LWC components such as `lightning-button-group` or `lightning-data-table` will not work with AutoAnimate because their DOM is protected by LWS and can't be touched by any third-party code. For example, you may be tempted to animate `lightning-layout`:
 
+```
+<lightning-layout class="animContainer"> <!-- This will not work -->
+    <lightning-layout-item for:each={items} for:item="item" key={item.id}>
+        {item.name}
+    </lightning-layout-item>
+</lightning-layout>
+```
+Unfortunately, this will not work. LWS protects the DOM of `lightning-` components. AutoAnimate won't be able to access or modify it.
+
+However, we can achieve a similar effect in another way. We can use normal HTML tags and [SLDS classes](https://www.lightningdesignsystem.com/utilities/grid/):
+
+```
+<div class="slds-grid slds-gutters animContainer">
+  <div class="slds-col slds-size_1-of-3" for:each={items} for:item="item" key={item.id}>
+    <span>{item.name}</span>
+  </div>
+</div>
+```
+Now we have full access and control over the DOM and the library will be able to animate it.
