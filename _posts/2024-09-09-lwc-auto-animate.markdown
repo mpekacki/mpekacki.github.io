@@ -14,6 +14,12 @@ As their website says, "AutoAnimate is a zero-config, drop-in animation utility 
   <source src="/media/todo1.mp4" type="video/mp4"/>
 </video>
 
+Or with to a search and sort component:
+
+<video controls width="100%">
+  <source src="/media/search1.mp4" type="video/mp4"/>
+</video>
+
 ## How to use it in LWC
 
 All it took to add these nice animations was to, first, add a class (`animContainer` in this case) to the parent element for the list elements in the HTML file:
@@ -54,7 +60,7 @@ That's it! Now the list is nicely animated every time an element changes positio
 
 ## Adding the library to SFDX project
 
-The only other thing we need to do is to add the library to our project (which we imported in `import autoAnimate from 'c/autoAnimate';`). We can do it by adding the library as an LWC module. To do it, let's create a new Lightning Web Component in our project and name it `autoAnimate`. If you're using Illuminated Cloud 2, you can choose `Type: Service` in the new LWC dialog - this way, no HTML file will be created, since it's unneccessary. If you're using VS Code, LWCs are always created with HTML files, but you can just delete the .html file. Now, your new `autoAnimate` component will look like this:
+The only other thing we need to do is to add the library (which we imported in `import autoAnimate from 'c/autoAnimate';`) to our project. We can do it by adding the library as an LWC module. To do it, let's create a new Lightning Web Component in our project and name it `autoAnimate`. If you're using Illuminated Cloud 2, you can choose `Type: Service` in the new LWC dialog - this way, no HTML file will be created, since it's unneccessary. If you're using VS Code, LWCs are always created with HTML files, but you can just delete the .html file. Now, your new `autoAnimate` component will look like this:
 
 ```javascript
 import { LightningElement } from 'lwc';
