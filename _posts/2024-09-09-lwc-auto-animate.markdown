@@ -14,7 +14,7 @@ As their website says, "AutoAnimate is a zero-config, drop-in animation utility 
   <source src="/media/todo1.mp4" type="video/mp4"/>
 </video>
 
-Or with to a search and sort component:
+Or to a search and sort component:
 
 <video controls width="100%">
   <source src="/media/search1.mp4" type="video/mp4"/>
