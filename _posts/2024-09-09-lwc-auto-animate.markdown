@@ -20,6 +20,8 @@ Or to a search and sort component:
   <source src="/media/search1.mp4" type="video/mp4"/>
 </video>
 
+[Examples source code on Github](https://github.com/mpekacki/autoanimate-demo)
+
 ## How to use it in LWC
 
 All it took to add these nice animations was to, first, add a class (`animContainer` in this case) to the parent element for the list elements in the HTML file:
