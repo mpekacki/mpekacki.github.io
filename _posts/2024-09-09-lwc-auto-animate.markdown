@@ -24,7 +24,7 @@ Or to a search and sort component:
 
 ## How to use it in LWC
 
-All it took to add these nice animations was to, first, add a class (`animContainer` in this case) to the parent element for the list elements in the HTML file:
+Adding these nice animations doesn't take much effort. First, we need to add a class (`animContainer` in this case) to the parent element for the list elements in the HTML file:
 
 ```html
 <div class="animContainer">
@@ -43,8 +43,7 @@ import autoAnimate from 'c/autoAnimate';
 
 define a flag that will make sure that we initialize the animations only once,
 ```javascript
-export default class AnimTodo extends LightningElement {
-    aaInitialized = false;
+aaInitialized = false;
 ```
 
 and add a `renderedCallback` that will perform the initialization
@@ -55,6 +54,32 @@ renderedCallback() {
     if (!animContainer) return; // container is not yet created, return and wait for another renderedCallback
     autoAnimate(animContainer); // initialize animations using AutoAnimate
     this.aaInitialized = true; // set the flag to true so we don't initialize again
+}
+```
+
+Here's how the JS file will look like in full:
+
+```javascript
+import { LightningElement, track } from 'lwc';
+import autoAnimate from 'c/autoanimate';
+
+export default class TodoList extends LightningElement {
+    aaInitialized = false;
+
+    renderedCallback() {
+        if (this.aaInitialized) {
+            return;
+        }
+        const animContainer = this.template.querySelector('.animContainer');
+        if (!animContainer) {
+            return;
+        }
+        autoAnimate(animContainer);
+        this.aaInitialized = true;
+    }
+    
+    // component logic
+    // ...
 }
 ```
 
