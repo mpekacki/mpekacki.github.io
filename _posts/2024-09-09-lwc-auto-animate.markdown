@@ -67,15 +67,14 @@ export default class TodoList extends LightningElement {
     aaInitialized = false;
 
     renderedCallback() {
-        if (this.aaInitialized) {
-            return;
+        if (!this.aaInitialized) {
+          const animContainer = this.template.querySelector('.animContainer');
+          if (!animContainer) {
+              return;
+          }
+          autoAnimate(animContainer);
+          this.aaInitialized = true;
         }
-        const animContainer = this.template.querySelector('.animContainer');
-        if (!animContainer) {
-            return;
-        }
-        autoAnimate(animContainer);
-        this.aaInitialized = true;
     }
     
     // component logic
