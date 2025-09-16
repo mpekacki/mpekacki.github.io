@@ -49,11 +49,11 @@ aaInitialized = false;
 and add a `renderedCallback` that will perform the initialization
 ```javascript
 renderedCallback() {
-    if (this.aaInitialized) return; // if already initialized, do nothing
-    const animContainer = this.template.querySelector('.animContainer'); // get animation container
-    if (!animContainer) return; // container is not yet created, return and wait for another renderedCallback
-    autoAnimate(animContainer); // initialize animations using AutoAnimate
-    this.aaInitialized = true; // set the flag to true so we don't initialize again
+  if (this.aaInitialized) return; // if already initialized, do nothing
+  const animContainer = this.template.querySelector('.animContainer'); // get animation container
+  if (!animContainer) return; // container is not yet created, return and wait for another renderedCallback
+  autoAnimate(animContainer); // initialize animations using AutoAnimate
+  this.aaInitialized = true; // set the flag to true so we don't initialize again
 }
 ```
 
@@ -64,21 +64,21 @@ import { LightningElement, track } from 'lwc';
 import autoAnimate from 'c/autoanimate';
 
 export default class TodoList extends LightningElement {
-    aaInitialized = false;
+  aaInitialized = false;
 
-    renderedCallback() {
-        if (!this.aaInitialized) {
-          const animContainer = this.template.querySelector('.animContainer');
-          if (!animContainer) {
-              return;
-          }
-          autoAnimate(animContainer);
-          this.aaInitialized = true;
-        }
+  renderedCallback() {
+    if (!this.aaInitialized) {
+      const animContainer = this.template.querySelector('.animContainer');
+      if (!animContainer) {
+          return;
+      }
+      autoAnimate(animContainer);
+      this.aaInitialized = true;
     }
-    
-    // component logic
-    // ...
+  }
+  
+  // component logic
+  // ...
 }
 ```
 
